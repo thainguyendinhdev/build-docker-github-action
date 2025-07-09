@@ -5,7 +5,7 @@ services:
     image: php:7.4-cli
     container_name: backend
     volumes:
-      - ../src/web:/app
+      - ../../src/web:/app
     working_dir: /app
     command: tail -f /dev/null
     environment:
@@ -14,7 +14,7 @@ services:
       DB_DATABASE: test_db
       DB_USERNAME: test_user
       DB_PASSWORD: test_pass
-      S3_KEY
+      S3_KEY: s3
     depends_on:
       - db
 
