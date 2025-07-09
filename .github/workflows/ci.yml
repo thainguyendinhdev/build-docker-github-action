@@ -1,0 +1,39 @@
+name: Setup Backend CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  backend-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Start containers from compose in .github/
+        run: docker-compose -f .github/actions/setup-backend.yml up -d
+
+      - name: Install PHP extensions
+        run: |
+          docker exec backend apt-get update
+          docker exec backend apt-get install -y unzip libzip-dev libicu-dev libonig-dev
+          docker exec backend docker-php-ext-install pdo pdo_mysql mbstring zip intl
+          docker exec backend bash -c "echo 'variables_order = \"EGPCS\"' > /usr/local/etc/php/conf.d/env.ini"
+
+      # - name: Install Composer
+      #   run: docker exec backend composer install
+
+      # - name: Run PHPUnit
+      #   run: docker exec backend ./vendor/bin/phpunit
+      - name: check env
+        run: docker exec -it backend php /app/index.php
+
+      - name: Cleanup
+        if: always()
+        run: docker-compose -f .github/setup-backend.yml down -v

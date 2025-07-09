@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app:
+    image: php:7.4-cli
+    container_name: backend
+    volumes:
+      - ../src/web:/app
+    working_dir: /app
+    command: tail -f /dev/null
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: test_db
+      DB_USERNAME: test_user
+      DB_PASSWORD: test_pass
+      S3_KEY
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0.4
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: test_user
+      MYSQL_PASSWORD: test_pass
+    ports:
+      - "3306:3306"
