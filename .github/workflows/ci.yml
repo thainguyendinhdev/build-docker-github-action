@@ -36,4 +36,4 @@ jobs:
 
       - name: Cleanup
         if: always()
-        run: docker-compose -f .github/setup-backend.yml down -v
+        run: docker compose -f .github/setup-backend.yml down -v

@@ -14,7 +14,7 @@ services:
       DB_DATABASE: test_db
       DB_USERNAME: test_user
       DB_PASSWORD: test_pass
-      S3_KEY
+      S3_KEY: s3
     depends_on:
       - db
 
